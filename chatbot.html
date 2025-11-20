@@ -21,7 +21,7 @@
           setInputText(event.target.value);
         }
 
-        function sendMessage() {
+        async function sendMessage(){
           const newChatMessages = [
             ... chatMessages, 
             { 
@@ -29,11 +29,11 @@
               sender:'user',
               id: crypto.randomUUID()
             }
-          ]
+          ];
 
           setChatMessages(newChatMessages);
 
-          const response = Chatbot.getResponse(inputText);
+          const response = await Chatbot.getResponseAsync(inputText);
           setChatMessages([
             ... newChatMessages, 
             { 
@@ -67,7 +67,7 @@
           </>
         );
       }
-
+      
       function ChatMessage({message, sender}) { 
         return (
           <div>
@@ -136,4 +136,3 @@
     </script>
   </body>
 </html>
-
