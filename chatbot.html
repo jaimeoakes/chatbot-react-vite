@@ -16,6 +16,7 @@
 
       function ChatInput({chatMessages, setChatMessages}) {
         const [inputText, setInputText] = React.useState('');
+        const [isLoading, setIsLoading] = React.useState(false);
 
         function saveInputDate(event) {
           setInputText(event.target.value);
@@ -23,6 +24,13 @@
 
         async function sendMessage(){
           setInputText('');
+
+          if (isLoading || inputText === '') {
+            return;
+          }
+          // Set isLoading to true at the start, and set it to
+          // false after everything is done.
+          setIsLoading(true);
           
           const newChatMessages = [
             ... chatMessages, 
@@ -54,6 +62,8 @@
               id: crypto.randomUUID()
             }
           ]);
+          // Set isLoading to false after everything is done.
+          setIsLoading(false);
         }
 
           function handleKeyDown(event) {
