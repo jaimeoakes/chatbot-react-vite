@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script> 
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script> 
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script> 
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+
+      // COMPONENTE (função que retorna JSX)
+      // Parâmetros do componente → {chatMessages, setChatMessages}
+      // Isso é OBJECT DESTRUCTURING dos props
+      function ChatInput({chatMessages, setChatMessages}) { 
+      // chatMessages → prop
+      // setChatMessages → prop
+
+        // variável de state (array com 2 valores retornados)
+        const [inputText, setInputText] = React.useState('');
+        // inputText → variável (string)
+        // setInputText → função
+        // React.useState → função sendo invocada
+
+        function saveInputDate(event) { 
+          // event → parâmetro
+          // event.target → objeto
+          // event.target.value → string
+          setInputText(event.target.value);   // função sendo invocada
+        }
+
+
+        function sendMessage() { 
+          // newChatMessages → variável
+          // valor → array
+          const newChatMessages = [
+            ... chatMessages, // spread → copia um array
+            { // objeto
+              message: inputText,   // propriedade (string)
+              sender:'user',        // propriedade (string)
+              id: crypto.randomUUID() // função sendo invocada
+            }
+          ]
+
+          setChatMessages(newChatMessages);  // função sendo invocada
+
+          const response = Chatbot.getResponse(inputText);
+          // response → variável contendo string
+          // Chatbot → objeto
+          // getResponse → função dentro do objeto
+          // getResponse(...) → função sendo invocada
+
+          setChatMessages([
+            ... newChatMessages, 
+            {
+              message: response,
+              sender:'robot',
+              id: crypto.randomUUID()
+            }
+          ]);
+
+          setInputText(''); // função sendo invocada
+        }
+
+        // JSX sendo retornado
+        return (
+          <>  
+            <input 
+              placeholder="Send a message to Chatbot" // atributo string
+              size="30" // atributo number
+              onChange={saveInputDate} // prop recebendo função
+              value={inputText} // prop recebendo variável
+            />
+            <button onClick={sendMessage}>Send</button> 
+            {/* HTML + prop com função */}
+          </>
+        );
+      }
+
+      // COMPONENTE
+      // Parâmetros do componente → props destruturados
+      function ChatMessage({message, sender}) { 
+      // message → prop
+      // sender → prop
+
+        // JSX
+        return (
+          <div>  
+            {sender === 'robot' && (   // expressão (comparação booleana)
+              <img src="images/robot.png" width="50" /> // elemento
+            )}
+            {message} // variável sendo usada no JSX
+            {sender === 'user' && (
+              <img src="images/user.png" width="50" />
+            )}
+          </div>
+        );
+      }
+
+      // COMPONENTE
+      function ChatMessages({ chatMessages }) { 
+      // chatMessages → prop (array)
+
+        return (
+          <> 
+            {chatMessages.map((chatMessage) => { 
+            // chatMessages.map → função sendo invocada
+            // map recebe callback
+            // chatMessage → parâmetro do callback (objeto)
+
+              return (
+                <ChatMessage  // componente sendo invocado via JSX
+                  message={chatMessage.message} // prop
+                  sender={chatMessage.sender}   // prop
+                  key={chatMessage.id}          // prop especial React
+                />
+              );
+            })}
+          </>
+        );
+      }
+
+      // COMPONENTE PRINCIPAL
+      function App() {
+
+        // variáveis via React State
+        // React.useState → função sendo invocada
+        // recebe array inicial de objetos
+        const [chatMessages, setChatMessages] = React.useState([{
+          message:'hello Chatbot',  // string
+          sender:'user',            // string
+          id: 'id1'                 // string
+        }, {
+          message:'Hello! How can I help you?',
+          sender:'robot',
+          id: "id2"
+        }, {
+          message:'Can you get me today\'s date?', 
+          sender:'user',
+          id: 'id3'
+        }, {
+          message:'Today is September 27',
+          sender:'robot',
+          id:'id4'
+        }]);
+        // chatMessages → variável (array)
+        // setChatMessages → função
+
+        // JSX
+        return (
+          <> {/* fragment */}
+            <ChatInput   // componente sendo invocado
+              chatMessages={chatMessages}     // prop → array
+              setChatMessages={setChatMessages} // prop → função
+            />
+            <ChatMessages
+              chatMessages={chatMessages} // prop → array
+            />
+          </>
+        );
+      }
+
+      // variável
+      const container = document.querySelector('.js-container'); 
+      // document.querySelector → função sendo invocada
+      // container → elemento HTML
+
+      // ReactDOM → objeto
+      // createRoot → função
+      // render → função sendo invocada
+      ReactDOM.createRoot(container).render(<App />); 
+      // <App /> → componente sendo invocado via JSX
+
+    </script>
+  </body>
+</html>
