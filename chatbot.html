@@ -79,6 +79,13 @@
         scrollbar-width: none;
       }
 
+      .welcome-message {
+        color: rgb(120, 120, 120);
+        text-align: center;
+      }
+
+      
+
     </style>
 
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
@@ -219,36 +226,25 @@
       }
 
       function App() {
-        const [chatMessages, setChatMessages] = React.useState([{
-          message:'hello Chatbot',
-          sender:'user',
-          id: 'id1'
-        }, {
-          message:'Hello! How can I help you?',
-          sender:'robot',
-          id: "id2"
-        }, {
-          message:'Can you get me today\'s date?', 
-          sender:'user',
-          id: 'id3'
-        }, {
-          message:'Today is September 27',
-          sender:'robot',
-          id:'id4'
-        }]);
-        
+        const [chatMessages, setChatMessages] = React.useState([]);
+
         return (
           <div className="app-container">
-            <ChatMessages
-             chatMessages={chatMessages}
-            />
+            {chatMessages.length === 0 && (
+              <p className="welcome-message">
+                Welcome to the chatbot project! Send a message using the textbox below.
+              </p>
+            )}
+
+            <ChatMessages chatMessages={chatMessages} />
             <ChatInput 
-              chatMessages={chatMessages}
+              chatMessages={chatMessages} 
               setChatMessages={setChatMessages}
             />
           </div>
         );
       }
+
 
       const container = document.querySelector('.js-container');
       ReactDOM.createRoot(container).render(<App />);
