@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react'
 import RobotProfileImage from '../assets/robot.png';
-import UserProfileImage from '../assets/user.png';
+import UserProfileImage from '../assets/profile-1.jpg';
 import './ChatMessage.css';
+
+console.log(UserProfileImage);
+
 
 export function ChatMessage({ message, sender }) {
   return (
