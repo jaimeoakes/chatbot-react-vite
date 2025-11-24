@@ -21,3 +21,18 @@
   display: flex;
   margin-bottom: 60px;
 }
+
+.clear-button {
+  padding: 12px 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  background-color: #e5e5e5;
+}
+
+.clear-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './ChatInput.css';
 import dayjs from 'dayjs';
 
-export function ChatInput({ chatMessages, setChatMessages }) {
+export function ChatInput({ chatMessages, setChatMessages, onClear }) {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -83,8 +83,20 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         value={inputText}
         className="chat-input"
       />
-      <button onClick={sendMessage} className="send-button">
+      <button 
+        onClick={sendMessage}
+        className="send-button"
+        disabled={isLoading}
+      >
         Send
+      </button>
+
+      <button
+        onClick={onClear}
+        className="clear-button"
+        disabled={chatMessages.length === 0}
+      >
+        Clear
       </button>
     </div>
   );
